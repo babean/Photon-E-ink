@@ -12,7 +12,7 @@ TCON_MPICO::TCON_MPICO(uint8_t ss, int spiclkspeed, uint8_t tcbusy):
 }
 
 void  TCON_MPICO::begin(){
-	MYSPI.begin(SPI_MODE_MASTER,_ss);			// Init SPI bus
+	MYSPI_begin(_ss); 			// Init SPI bus
 	MYSPI.setBitOrder(MSBFIRST);
 	MYSPI.setClockSpeed(_spiclkspeed);
 	MYSPI.setDataMode(SPI_MODE3);
@@ -28,17 +28,14 @@ void TCON_MPICO::waitInit(){
 }
 void TCON_MPICO::waitTCbusy(){
     delayMicroseconds(20);
-    while (!digitalRead(_tcbusy)) ;//Serial.println("Waiting for TCbusy");
+    while (!digitalRead(_tcbusy)) ;
 }
 
 void TCON_MPICO::sendCommand(char *buffer, int size){
-    //Serial.println("Sending Command");
     waitTCbusy();
-    //Serial.println("TC done");
     digitalWrite(_ss,LOW);
     for (int i=0;i<size;i++) {
         MYSPI.transfer(buffer[i]);
-        //Serial.printlnf("Sending Command byte:%.2x",buffer[i]);
     }
     digitalWrite(_ss,HIGH);
 }
