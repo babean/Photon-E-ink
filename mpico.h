@@ -9,14 +9,19 @@
 
 #if PLATFORM_ID == 0 // Core
 #define MYSPI SPI
+#define MYSPI_begin(ss) MYSPI.begin(SPI_MODE_MASTER,ss)
 #elif PLATFORM_ID == 6 // Photon
 #define MYSPI SPI1
+#define MYSPI_begin(ss) MYSPI.begin(SPI_MODE_MASTER,ss)
 #elif PLATFORM_ID == 8 // P1
 #define MYSPI SPI1
+#define MYSPI_begin(ss) MYSPI.begin(SPI_MODE_MASTER,ss)
 #elif PLATFORM_ID == 10 // Electron
 #define MYSPI SPI1
+#define MYSPI_begin(ss) MYSPI.begin(SPI_MODE_MASTER,ss)
 #elif PLATFORM_ID == 103 // BluzDK
 #define MYSPI SPI
+#define MYSPI_begin(ss) MYSPI.begin(ss)
 #else
   #error "*** PLATFORM_ID not supported by this firmware. PLATFORM should be Core, Photon, P1 or Electron ***"
 #endif
@@ -41,8 +46,8 @@ public:
 
 private:
   uint8_t _ss;
-  uint8_t _tcbusy;
   int _spiclkspeed;
+  uint8_t _tcbusy;
 
   void waitTCbusy(void);
   void waitInit(void);
